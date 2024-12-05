@@ -48,9 +48,8 @@ let run path =
             match inst with
             | Do -> (acc, true)
             | Dont -> (acc, false)
-            | Mul (x, y) ->  if do' then (acc + (x * y), do') else (acc, do'))
-      printfn "%u" <| fst filtered
-      ())
+            | Mul (x, y) -> if do' then (acc + (x * y), do') else (acc, do'))
+      printfn "%u" <| fst filtered)
 
 #if !INTERACTIVE
 [<EntryPoint>]

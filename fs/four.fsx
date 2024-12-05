@@ -81,7 +81,6 @@ let run path = readInput path |>> fun (lns : string[]) ->
       then acc
       else acc + intOfBool (searchAround lns p))
    printfn "%d" n
-   ()
 
 #if !INTERACTIVE
 [<EntryPoint>]
