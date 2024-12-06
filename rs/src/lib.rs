@@ -16,12 +16,11 @@ pub trait Blit: Iterator + Sized {
       let mut i = 0;
       while let Some(elt) = self.next() {
          if i >= buf.len() {
-            return (&mut buf[..i], self);
+            return (buf, self);
          }
-         buf[i] = elt;
-         i += 1;
+         buf[fetch_add(&mut i, 1)] = elt;
       }
-      (buf, self)
+      (&mut buf[..i], self)
    }
 }
 
