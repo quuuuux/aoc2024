@@ -14,4 +14,16 @@ path = "one/main.rs"
 name = "two"
 path = "two/main.rs"
 
+[[bin]]
+name = "seven"
+path = "seven/main.rs"
+
+[[bin]]
+name = "eight"
+path = "eight/main.rs"
+
+[[bin]]
+name = "eleven"
+path = "eleven/main.rs"
+
 [dependencies]
