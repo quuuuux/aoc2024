@@ -64,8 +64,8 @@ let searchAround (grid : string[]) (x, y) =
         || (upRight = 'S' && downLeft = 'M'))
 
 let run path = readInput path |>> fun (lns : string[]) ->
-   let pts = seq { 0 .. length lns - 1 } >>= fun x ->
-      zip (seq { 0 .. length lns[0] - 1}) (Seq.replicate <| length lns[x] <| x)
+   let pts = seq { 0 .. length lns - 1 } >>= fun y ->
+      zip (seq { 0 .. length lns[0] - 1}) (Seq.replicate <| length lns[y] <| y)
    let n = (0, pts) ||> fold (fun acc p ->
       if lns[snd p][fst p] <> 'X' then acc
       else
