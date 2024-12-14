@@ -8,27 +8,28 @@
 
 #define auto __auto_type
 
-#define try(...)               \
-   __extension__ ({            \
+#define try(...) \
+   __extension__ ({ \
       auto abcdefg = __VA_ARGS__; \
-      if (abcdefg < 0) {        \
-         goto fail;           \
-      }                     \
-      abcdefg;               \
+      if (abcdefg < 0) { \
+         goto fail; \
+      } \
+      abcdefg; \
    })
 
-#define try_bool(...)            \
-   __extension__ ({            \
+#define try_bool(...) \
+   __extension__ ({ \
       auto abcdefg = __VA_ARGS__; \
-      if (!abcdefg) {          \
-         goto fail;           \
-      }                     \
-      abcdefg;               \
+      if (!abcdefg) { \
+         goto fail; \
+      } \
+      abcdefg; \
    })
 
 #define Pair(T, U) struct { T _0; U _1; }
 
-void* xmalloc(size_t len) {
+void*
+xmalloc(size_t len) {
    auto p = malloc(len);
    if (!p) {
       abort();
@@ -36,7 +37,8 @@ void* xmalloc(size_t len) {
    return p;
 }
 
-void* xrealloc(void* p, size_t len) {
+void*
+xrealloc(void* p, size_t len) {
    p = realloc(p, len);
    if (!p) {
       abort();
@@ -75,7 +77,6 @@ slurp(const char *fname) {
          buf = xrealloc(buf, cap);
       }
    }
-
 fail:
    free(buf);
    return (__typeof(slurp(fname))){NULL, 0};
