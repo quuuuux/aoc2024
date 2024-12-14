@@ -11,20 +11,20 @@
 
 #define try(...) \
    __extension__ ({ \
-     auto abcdefg = __VA_ARGS__; \
-     if (abcdefg < 0) { \
-       goto fail; \
-     } \
-     abcdefg; \
+      auto abcdefg = __VA_ARGS__; \
+      if (abcdefg < 0) { \
+         goto fail; \
+      } \
+      abcdefg; \
    })
 
 #define try_bool(...) \
    __extension__ ({ \
-     auto abcdefg = __VA_ARGS__; \
-     if (!abcdefg) { \
-       goto fail; \
-     } \
-     abcdefg; \
+      auto abcdefg = __VA_ARGS__; \
+      if (!abcdefg) { \
+         goto fail; \
+      } \
+      abcdefg; \
    })
 
 #define Pair(T, U) struct { T _0; U _1; }
