@@ -14,8 +14,7 @@ let readInput path = monad' {
          |> Seq.forall (length >> (=) (lines |> item 1 |> length))
       then Ok ()
       else Error "invalid input"
-   return lines
-}
+   return lines }
 
 let intOfBool b = if b then 1 else 0
 
@@ -53,7 +52,9 @@ let searchRight (grid : string[]) (x, y) =
    search' (fun (x, y) -> x > length grid[y] - 4) (+) konst grid (x, y)
 
 let searchAround (grid : string[]) (x, y) =
-   if y < 1 || x < 1 || y > length grid - 2 || x > length grid[y] - 2 then false
+   if
+      y < 1 || x < 1 || y > length grid - 2
+      || x > length grid[y] - 2 then false
    else
       let upLeft = grid[y - 1][x - 1]
       let upRight = grid[y - 1][x + 1]
@@ -85,8 +86,7 @@ let run path = readInput path |>> fun (lns : string[]) ->
 #if !INTERACTIVE
 [<EntryPoint>]
 #endif
-let main args =
-   match args with
+let main args = function
    | [|_; arg|] ->
       match run arg with
       | Ok () -> 0

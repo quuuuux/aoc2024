@@ -1,3 +1,8 @@
+#if 0
+cc -Wall -Wextra -g -fsanitize=address $0
+./a.out $@
+exit
+#endif
 #include <fcntl.h>
 #include <stddef.h>
 #include <stdint.h>

@@ -1,3 +1,8 @@
+#if 0
+cc -Wall -Wextra -g -fsanitize=address $0
+./a.out $@
+exit
+#endif
 #include <fcntl.h>
 #include <stddef.h>
 #include <stdint.h>
@@ -131,7 +136,7 @@ parse(const char *str, size_t len) {
 int64_t actual_mod(int64_t a, int64_t b) {
    auto m = a % b;
    if (m < 0) {
-      m += b < 0 ? - b : + b;
+      m += b < 0 ? -b : b;
    }
    return m;
 }

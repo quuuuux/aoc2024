@@ -16,8 +16,7 @@ let readInput path = monad' {
          |> Seq.forall (length >> (=) (lines |> item 1 |> length))
       then Ok ()
       else Error "invalid input"
-   return lines |> Array.map (Seq.map uint8OfChar >> Array.ofSeq)
-}
+   return lines |> Array.map (Seq.map uint8OfChar >> Array.ofSeq) }
 
 let tryStep (rows : uint8[][]) (x, y) =
    if y >= 0 && y < length rows && x >= 0 && x < length rows[y]
@@ -26,7 +25,9 @@ let tryStep (rows : uint8[][]) (x, y) =
 
 let one (rows : uint8[][]) =
    let pts = seq { 0 .. length rows - 1 } >>= fun y ->
-      zip (seq { 0 .. length rows[0] - 1}) (Seq.replicate <| length rows[y] <| y)
+      let is = (seq { 0 .. length rows[0] - 1})
+      let js = (Seq.replicate <| length rows[y] <| y)
+      zip is js
    let sum = (0, pts) ||> fold (fun acc (x, y) ->
       if rows[y][x] <> 0uy then acc
       else
@@ -54,7 +55,9 @@ let one (rows : uint8[][]) =
 let two (rows : uint8[][]) =
    let queue = System.Collections.Generic.PriorityQueue()
    let pts = seq { 0 .. length rows - 1 } >>= fun y ->
-      zip (seq { 0 .. length rows[0] - 1}) (Seq.replicate <| length rows[y] <| y)
+      let is = (seq { 0 .. length rows[0] - 1})
+      let js = (Seq.replicate <| length rows[y] <| y)
+      zip is js
    pts |> iter (fun (x, y) ->
       if rows[y][x] = 0uy then
          queue.Enqueue((x, y), 0))
@@ -83,8 +86,7 @@ let run path = readInput path |>> fun rs ->
 #if !INTERACTIVE
 [<EntryPoint>]
 #endif
-let main args =
-    match args with
+let main args = function
     | [|_; arg|] ->
        match run arg with
        | Ok () -> 0

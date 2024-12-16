@@ -63,28 +63,26 @@ let rec findCycle (grid : Tile[][]) (acc : HashSet<_>) (x, y) dir =
 
 let intOfBool b = if b then 1 else 0
 
-let run path =
-   path |> Parse.parse |> Result.bind (fun (grid, pos) ->
-      match pos with
-      | None -> Error "invalid input"
-      | Some p ->
-         let pos = (int p.Column - 2, int p.Line - 1)
-         let grid = grid |> Seq.map Array.ofList |> Array.ofSeq
-         let visited = move grid Set.empty pos Up
-         printfn "%d" <| length visited
+let run path = path |> Parse.parse >>= fun (grid, pos) ->
+   match pos with
+   | None -> Error "invalid input"
+   | Some p ->
+      let grid = grid |> Seq.map Array.ofList |> Array.ofSeq
+      let pos = (int p.Column - 2, int p.Line - 1)
+      let visited = move grid Set.empty pos Up
+      printfn "%d" <| length visited
 
-         let ans = (0, visited |> Set.remove pos) ||> fold (fun acc (x, y) ->
-            grid[y][x] <- Blocked
-            let cycle = findCycle grid <| HashSet() <| pos <| Up
-            grid[y][x] <- Empty
-            acc + intOfBool cycle)
-         Ok <| printfn "%d" ans)
+      let ans = (0, visited |> Set.remove pos) ||> fold (fun acc (x, y) ->
+         grid[y][x] <- Blocked
+         let cycle = findCycle grid <| HashSet() <| pos <| Up
+         grid[y][x] <- Empty
+         acc + intOfBool cycle)
+      Ok <| printfn "%d" ans
 
 #if !INTERACTIVE
 [<EntryPoint>]
 #endif
-let main args =
-   match args with
+let main = function
    | [|_; arg|] ->
       match run arg with
       | Ok () -> 0
