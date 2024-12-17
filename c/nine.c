@@ -33,7 +33,7 @@ exit
 
 #define Pair(T, U) struct { T _0; U _1; }
 
-void*
+void *
 xmalloc(size_t len) {
    auto p = malloc(len);
    if (!p) {
@@ -42,8 +42,8 @@ xmalloc(size_t len) {
    return p;
 }
 
-void*
-xrealloc(void* p, size_t len) {
+void *
+xrealloc(void *p, size_t len) {
    p = realloc(p, len);
    if (!p) {
       abort();
@@ -51,7 +51,7 @@ xrealloc(void* p, size_t len) {
    return p;
 }
 
-Pair(int8_t*, size_t)
+Pair(int8_t *, size_t)
 slurp(const char *fname) {
    int8_t *buf = NULL;
    size_t cap = 0;
@@ -206,7 +206,7 @@ size_t
 two(int8_t *buf, size_t len) {
    HoleDeque holes[9];
    for (size_t i = 0; i < 9; ++i) {
-      Hole* p = xmalloc(4096 * sizeof(*p));
+      Hole *p = xmalloc(4096 * sizeof(*p));
       holes[i] = (HoleDeque){p + 1024, p + 1024, p, p + 4096};
    }
    for (size_t i = 1, k = 0; i < len; i += 2) {

@@ -34,7 +34,7 @@ exit
 
 #define Pair(T, U) struct { T _0; U _1; }
 
-void*
+void *
 xmalloc(size_t len) {
    auto p = malloc(len);
    if (!p) {
@@ -43,8 +43,8 @@ xmalloc(size_t len) {
    return p;
 }
 
-void*
-xrealloc(void* p, size_t len) {
+void *
+xrealloc(void *p, size_t len) {
    p = realloc(p, len);
    if (!p) {
      abort();
@@ -52,7 +52,7 @@ xrealloc(void* p, size_t len) {
    return p;
 }
 
-Pair(const char*, size_t)
+Pair(const char *, size_t)
 slurp(const char *fname) {
    char *buf = NULL;
    size_t cap = 0;
@@ -93,14 +93,14 @@ typedef struct {
 
 PlotVec2d
 parse(const char *str, size_t len) {
-   const char* p = try_bool (__builtin_memchr(str, '\n', len));
+   const char *p = try_bool (__builtin_memchr(str, '\n', len));
    size_t nrows = 1, ncols = p - str;
    for (auto q = p + ncols + 1; q < str + len; q += ncols + 1) {
       try_bool (*q == '\n');
       ++nrows;
    }
 
-   Plot* buf = xmalloc(ncols * nrows * sizeof(Plot)), *b = buf;
+   Plot *buf = xmalloc(ncols * nrows * sizeof(Plot)), *b = buf;
    for (auto q = str; q < str + len; q += ncols + 1) {
       for (size_t i = 0; i < ncols; ++i) {
          *b++ = (Plot){q[i], false};
@@ -111,12 +111,12 @@ fail:
    return (PlotVec2d){NULL, 0, 0};
 }
 
-Plot*
+Plot *
 plot_index(PlotVec2d *vec, size_t x, size_t y) {
    return vec->buf + (y * vec->ncols) + x;
 }
 
-Plot*
+Plot *
 plot_try_index(PlotVec2d *vec, ssize_t x, ssize_t y) {
    return
       x >= 0 && (size_t)x < vec->ncols && y >= 0 && (size_t)y < vec->nrows ?
@@ -125,7 +125,7 @@ plot_try_index(PlotVec2d *vec, ssize_t x, ssize_t y) {
 }
 
 bool
-crawl_one_(char plant, Plot* plot, size_t *nfences) {
+crawl_one_(char plant, Plot *plot, size_t *nfences) {
    if (!plot || plot->plant != plant) {
       ++*nfences;
       return false;
@@ -138,7 +138,7 @@ crawl_one_(char plant, Plot* plot, size_t *nfences) {
 }
 
 size_t
-crawl_one(PlotVec2d* plots, size_t x, size_t y) {
+crawl_one(PlotVec2d *plots, size_t x, size_t y) {
    Pair(uint32_t, uint32_t) stk[1024], *head = stk;
    *head++ = (__typeof(*head)){x, y};
    size_t nplots = 0, nfences = 0;
@@ -163,7 +163,7 @@ crawl_one(PlotVec2d* plots, size_t x, size_t y) {
 }
 
 size_t
-crawl(PlotVec2d *plots, size_t (*fn)(PlotVec2d*, size_t, size_t)) {
+crawl(PlotVec2d *plots, size_t (*fn)(PlotVec2d *, size_t, size_t)) {
    size_t sum = 0;
    for (size_t i = 0; i < plots->ncols; ++i) {
       for (size_t j = 0; j < plots->nrows; ++j) {
@@ -178,7 +178,7 @@ crawl(PlotVec2d *plots, size_t (*fn)(PlotVec2d*, size_t, size_t)) {
 }
 
 bool
-crawl_two_(char plant, Plot* plot, unsigned off, unsigned *walls) {
+crawl_two_(char plant, Plot *plot, unsigned off, unsigned *walls) {
    if (!plot || plot->plant != plant) {
       *walls |= 1 << off;
       return false;
@@ -191,14 +191,14 @@ crawl_two_(char plant, Plot* plot, unsigned off, unsigned *walls) {
 }
 
 bool
-check_diagonal(PlotVec2d* plots, char plant, size_t x, size_t y) {
+check_diagonal(PlotVec2d *plots, char plant, size_t x, size_t y) {
    auto p = plot_try_index(plots, x, y);
    return !p || p->plant != plant;
 }
 
 size_t
 check_diagonals(
-   PlotVec2d* plots, char plant, size_t x, size_t y, unsigned walls)
+   PlotVec2d *plots, char plant, size_t x, size_t y, unsigned walls)
 {
    size_t ncorners = 0;
    if ((walls & 0x3) == 0) { // Up left
@@ -221,7 +221,7 @@ check_diagonals(
 }
 
 size_t
-crawl_two(PlotVec2d* plots, size_t x, size_t y) {
+crawl_two(PlotVec2d *plots, size_t x, size_t y) {
    Pair(uint32_t, uint32_t) stk[1024], *head = stk;
    *head++ = (__typeof(*head)){x, y};
    size_t nplots = 0, nfences = 0;

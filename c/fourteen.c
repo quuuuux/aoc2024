@@ -33,7 +33,7 @@ exit
 
 #define Pair(T, U) struct { T _0; U _1; }
 
-void*
+void *
 xmalloc(size_t len) {
    auto p = malloc(len);
    if (!p) {
@@ -42,8 +42,8 @@ xmalloc(size_t len) {
    return p;
 }
 
-void*
-xrealloc(void* p, size_t len) {
+void *
+xrealloc(void * p, size_t len) {
    p = realloc(p, len);
    if (!p) {
       abort();
@@ -51,7 +51,7 @@ xrealloc(void* p, size_t len) {
    return p;
 }
 
-Pair(const char*, size_t)
+Pair(const char *, size_t)
 slurp(const char *fname) {
    char *buf = NULL;
    size_t cap = 0;
@@ -83,8 +83,8 @@ typedef struct {
 } Robo;
 
 // Screw error handling
-Pair(int64_t, const char*)
-parse_int(const char* str, const char* end) {
+Pair(int64_t, const char *)
+parse_int(const char * str, const char * end) {
    int64_t n = 0;
    int64_t s = str != end && *str == '-' ? ++str, -1 : 1;
    while (str != end) {
@@ -99,7 +99,7 @@ parse_int(const char* str, const char* end) {
    return (__typeof(parse_int(str, end))){n * s, str};
 }
 
-Pair(Robo*, size_t)
+Pair(Robo *, size_t)
 parse(const char *str, size_t len) {
    size_t l = 0;
    for (size_t i = 0; i < len; ++i) {
@@ -108,7 +108,7 @@ parse(const char *str, size_t len) {
       }
    }
 
-   Robo* buf = xmalloc(l * sizeof(*buf));
+   Robo *buf = xmalloc(l * sizeof(*buf));
    auto end = str + len;
    for (size_t i = 0; i < l; ++i) {
       str += __builtin_strlen("p=");
@@ -142,7 +142,7 @@ int64_t actual_mod(int64_t a, int64_t b) {
 }
 
 int64_t
-one(Robo* robos, size_t nrobos) {
+one(Robo *robos, size_t nrobos) {
    int64_t quads[4] = {0};;
    for (size_t i = 0; i < nrobos; ++i) {
       auto x = actual_mod(robos[i].p._0 + (robos[i].v._0 * 100), 101);
@@ -155,7 +155,7 @@ one(Robo* robos, size_t nrobos) {
 }
 
 int64_t
-step(Robo* robos, size_t nrobos) {
+step(Robo *robos, size_t nrobos) {
    int64_t quads[4] = {0};;
    for (size_t i = 0; i < nrobos; ++i) {
       auto x = actual_mod((robos[i].p._0 += robos[i].v._0), 101);
@@ -168,7 +168,7 @@ step(Robo* robos, size_t nrobos) {
 }
 
 size_t
-two(Robo* robos, size_t nrobos) {
+two(Robo *robos, size_t nrobos) {
    int64_t min = INT64_MAX;
    size_t j;
    for (size_t i = 0; i < 101 * 103; ++i) {

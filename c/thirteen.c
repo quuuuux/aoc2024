@@ -33,7 +33,7 @@ exit
 
 #define Pair(T, U) struct { T _0; U _1; }
 
-void*
+void *
 xmalloc(size_t len) {
    auto p = malloc(len);
    if (!p) {
@@ -42,8 +42,8 @@ xmalloc(size_t len) {
    return p;
 }
 
-void*
-xrealloc(void* p, size_t len) {
+void *
+xrealloc(void *p, size_t len) {
    p = realloc(p, len);
    if (!p) {
       abort();
@@ -51,7 +51,7 @@ xrealloc(void* p, size_t len) {
    return p;
 }
 
-Pair(const char*, size_t)
+Pair(const char *, size_t)
 slurp(const char *fname) {
    char *buf = NULL;
    size_t cap = 0;
@@ -83,8 +83,8 @@ typedef struct {
 } Game;
 
 // Screw error handling
-Pair(int64_t, const char*)
-parse_int(const char* str, const char* end) {
+Pair(int64_t, const char *)
+parse_int(const char *str, const char *end) {
    int64_t n = 0;
    while (str != end) {
       auto c = *str - '0';
@@ -98,7 +98,7 @@ parse_int(const char* str, const char* end) {
    return (__typeof(parse_int(str, end))){n, str};
 }
 
-Pair(Game*, size_t)
+Pair(Game *, size_t)
 parse(const char *str, size_t len) {
    size_t l = 0;
    for (size_t i = 0; i < len; ++i) {
@@ -108,7 +108,7 @@ parse(const char *str, size_t len) {
    }
    l = (l + 1) / 4;
 
-   Game* buf = xmalloc(l * sizeof(*buf));
+   Game *buf = xmalloc(l * sizeof(*buf));
    auto end = str + len;
    for (size_t i = 0; i < l; ++i) {
       str += __builtin_strlen("Button A: X+");
@@ -143,7 +143,7 @@ parse(const char *str, size_t len) {
 }
 
 int64_t
-run(Game* games, size_t ngames, int64_t extra) {
+run(Game *games, size_t ngames, int64_t extra) {
    int64_t sum = 0;
    for (size_t i = 0; i < ngames; ++i) {
       auto g = games + i;
