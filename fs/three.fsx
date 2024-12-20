@@ -54,7 +54,7 @@ let run path =
 #if !INTERACTIVE
 [<EntryPoint>]
 #endif
-let main args = function
+let main = function
    | [|_; arg|] ->
       match run arg with
       | Ok () -> 0
