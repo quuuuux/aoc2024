@@ -51,7 +51,7 @@ const Ring = struct {
    tail: usize,
 };
 
-fn fetch_add(x: anytype, y: anytype) @TypeOf(x.*, y) {
+fn fetch_add(x: anytype, comptime y: anytype) @TypeOf(x.*, y) {
    const x1 = x.*;
    x.* += y;
    return x1;
@@ -71,7 +71,7 @@ fn tryStep(
       return;
    }
    grid[@intCast(y)][@intCast(x)] = Tile.Visited;
-   ring.buf[fetch_add(&ring.head, 1) & 0x3ff] = .{
+   ring.buf[fetch_add(&ring.head, comptime 1) & 0x3ff] = .{
       .x = @intCast(x),
       .y = @intCast(y),
       .cost = cost,
@@ -86,9 +86,9 @@ fn one(input: []const struct { u8, u8 }, nblocks: usize) !u32 {
    }
 
    var ring = Ring{ .buf = undefined, .head = 0, .tail = 0 };
-   ring.buf[fetch_add(&ring.head, 1)] = .{ .x = 0, .y = 0, .cost = 0 };
+   ring.buf[fetch_add(&ring.head, comptime 1)] = .{ .x = 0, .y = 0, .cost = 0 };
    while (ring.head != ring.tail) {
-      const p = ring.buf[fetch_add(&ring.tail, 1) & 0x3ff];
+      const p = ring.buf[fetch_add(&ring.tail, comptime 1) & 0x3ff];
       if (p.x == 70 and p.y == 70) {
          return p.cost;
       }
@@ -122,6 +122,7 @@ pub fn main() !void {
       .fs
       .cwd()
       .readFileAlloc(allocator, std.mem.span(std.os.argv[1]), 0x8000);
+   defer allocator.free(str);
    const input = try parse(str);
    defer allocator.free(input);
    std.debug.print("{}\n", .{try one(input, 1024)});
